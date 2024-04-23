@@ -312,21 +312,6 @@ extension ListUtilities<T> on List<T> {
     return vals;
   }
 
-  void removeDuplicates<T>(bool Function(T, T) equals) {
-    int i = 0;
-    while (i < length - 1) {
-      int j = i + 1;
-      while (j < length) {
-        if (equals(this[i], this[j])) {
-          removeAt(j);
-        } else {
-          j++;
-        }
-      }
-      i++;
-    }
-  }
-
   List<T> safeSublist(int start, [int? end]) {
     if(isEmpty || start > length) return [];
     if(end != null && end > length) end = length;

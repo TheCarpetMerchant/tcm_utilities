@@ -235,8 +235,7 @@ class AboveKeyboard extends StatelessWidget {
 }
 
 /// A DropdownButtonFormField that makes use of the Map.toDropdownItems function.
-
-class SimpleDropDown<K> extends StatefulWidget {
+class SimpleDropDown<K> extends StatelessWidget {
 
   const SimpleDropDown({
     required this.onChanged,
@@ -246,6 +245,7 @@ class SimpleDropDown<K> extends StatefulWidget {
     this.title = '',
     this.expanded = false,
     this.padding = const EdgeInsets.all(8),
+    this.dropdownButtonFormFieldKey,
     super.key,
   });
 
@@ -262,33 +262,24 @@ class SimpleDropDown<K> extends StatefulWidget {
   final K? defaultValue;
 
   final EdgeInsets padding;
-  final Future<void> Function(K) onChanged;
+  final void Function(K) onChanged;
   final bool expanded;
-
-  @override
-  State<SimpleDropDown<K>> createState() => _SimpleDropDownState<K>();
-}
-
-class _SimpleDropDownState<K> extends State<SimpleDropDown<K>> {
-  final GlobalKey<State> dropdownButtonFormFieldKey = GlobalKey();
+  final GlobalKey<State>? dropdownButtonFormFieldKey;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.padding,
+      padding: padding,
       child: DropdownButtonFormField<K>(
         key: dropdownButtonFormFieldKey,
-        decoration: widget.title.isNotEmpty ? InputDecoration(labelText: widget.title) : null,
-        isExpanded: widget.expanded,
-        value: widget.content.keys.contains(widget.value) ? widget.value : widget.defaultValue,
+        decoration: title.isNotEmpty ? InputDecoration(labelText: title) : null,
+        isExpanded: expanded,
+        value: content.keys.contains(value) ? value : defaultValue,
         onChanged: (val) {
           if(val == null) return;
-          widget.onChanged(val).then((_) {
-            dropdownButtonFormFieldKey.currentState?.didUpdateWidget(DropdownButtonFormField<K>(items: [], onChanged: (_) {},));
-            dropdownButtonFormFieldKey.currentState?.setState(() {});
-          });
+          onChanged(val);
         },
-        items: widget.content.toDropDownItems,
+        items: content.toDropDownItems,
       ),
     );
   }
