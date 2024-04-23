@@ -235,7 +235,8 @@ class AboveKeyboard extends StatelessWidget {
 }
 
 /// A DropdownButtonFormField that makes use of the Map.toDropdownItems function.
-class SimpleDropDown<K> extends StatelessWidget {
+
+class SimpleDropDown<K> extends StatefulWidget {
 
   const SimpleDropDown({
     required this.onChanged,
@@ -263,25 +264,31 @@ class SimpleDropDown<K> extends StatelessWidget {
   final EdgeInsets padding;
   final Future<void> Function(K) onChanged;
   final bool expanded;
-  GlobalKey<State> dropdownButtonFormFieldKey = GlobalKey();
+
+  @override
+  State<SimpleDropDown<K>> createState() => _SimpleDropDownState<K>();
+}
+
+class _SimpleDropDownState<K> extends State<SimpleDropDown<K>> {
+  final GlobalKey<State> dropdownButtonFormFieldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
+      padding: widget.padding,
       child: DropdownButtonFormField<K>(
         key: dropdownButtonFormFieldKey,
-        decoration: title.isNotEmpty ? InputDecoration(labelText: title) : null,
-        isExpanded: expanded,
-        value: content.keys.contains(value) ? value : defaultValue,
+        decoration: widget.title.isNotEmpty ? InputDecoration(labelText: widget.title) : null,
+        isExpanded: widget.expanded,
+        value: widget.content.keys.contains(widget.value) ? widget.value : widget.defaultValue,
         onChanged: (val) {
           if(val == null) return;
-          onChanged(val).then((_) {
+          widget.onChanged(val).then((_) {
             dropdownButtonFormFieldKey.currentState?.didUpdateWidget(DropdownButtonFormField<K>(items: [], onChanged: (_) {},));
             dropdownButtonFormFieldKey.currentState?.setState(() {});
           });
         },
-        items: content.toDropDownItems,
+        items: widget.content.toDropDownItems,
       ),
     );
   }
