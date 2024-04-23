@@ -261,19 +261,25 @@ class SimpleDropDown<K> extends StatelessWidget {
   final K? defaultValue;
 
   final EdgeInsets padding;
-  final void Function(K) onChanged;
+  final Future<void> Function(K) onChanged;
   final bool expanded;
+  GlobalKey<State> dropdownButtonFormFieldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
       child: DropdownButtonFormField<K>(
+        key: dropdownButtonFormFieldKey,
         decoration: title.isNotEmpty ? InputDecoration(labelText: title) : null,
         isExpanded: expanded,
         value: content.keys.contains(value) ? value : defaultValue,
         onChanged: (val) {
-          if(val != null) onChanged(val);
+          if(val == null) return;
+          onChanged(val).then((_) {
+            dropdownButtonFormFieldKey.currentState?.didUpdateWidget(DropdownButtonFormField<K>(items: [], onChanged: (_) {},));
+            dropdownButtonFormFieldKey.currentState?.setState(() {});
+          });
         },
         items: content.toDropDownItems,
       ),
@@ -1498,3 +1504,41 @@ void toastThis(String value, {bool cancel = false, bool long = false}) {
 }
 
 void cancelToast() => Fluttertoast.cancel();
+
+extension NavigatorEnum on BuildContext {
+  /// [routeName] gets cast to a string. So you can use an enum and cast it back on the other side.
+  Future<T?> goTo<T extends Object?>(dynamic routeName, [Object? argument]) {
+    return Navigator.of(this).pushNamed<T>(routeName.toString(), arguments: argument);
+  }
+  /// See [goTo].
+  Future<T?> goToReplacement<T extends Object?, TO extends Object?>(dynamic routeName, [Object? argument]) {
+    return Navigator.of(this).pushReplacementNamed<T, TO>(routeName.toString(), arguments: argument);
+  }
+}
+
+class SliverPersistentFloatingHeader extends SliverPersistentHeaderDelegate {
+
+  SliverPersistentFloatingHeader({
+    required this.child,
+    required this.size,
+  });
+
+  final Widget child;
+  final double size;
+
+  @override
+  double get minExtent => size;
+
+  @override
+  double get maxExtent => size;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
+
+  @override
+  bool shouldRebuild(SliverPersistentFloatingHeader oldDelegate) {
+    return true;
+  }
+}
