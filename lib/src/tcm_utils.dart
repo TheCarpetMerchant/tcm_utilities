@@ -195,7 +195,7 @@ extension DurationUtilities on Duration {
   String get inHoursPadded => '$inHours'.padLeft(2,'0');
   String get hoursPadded => '$hour'.padLeft(2,'0');
   // ignore: prefer_interpolation_to_compose_strings
-  String get formatHourAndDays => (isNegative && inHours == 0 ? '-' : '') + (inDays > 0 ? '$inDays:' : '') + '$inHoursPadded:$minutesPadded';
+  String get formatHourAndDays => (isNegative && inHours == 0 ? '-' : '') + (inDays > 0 ? '$inDays:' : '') + '$hoursPadded:$minutesPadded';
 
   Duration get toClosestQuarter => Duration(hours: inHours) + Duration(minutes: DateTimeUtilities.roundToClosestQuarter(minute));
   Duration get toAboveQuarter => Duration(hours: inHours) + Duration(minutes: DateTimeUtilities.roundToAboveQuarter(minute));
