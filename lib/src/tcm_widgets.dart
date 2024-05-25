@@ -127,6 +127,7 @@ class IntSlider extends StatelessWidget {
     this.label = '',
     this.unit = '',
     this.padding = const EdgeInsets.all(8),
+    this.showTitle = true,
     super.key,
   });
 
@@ -149,6 +150,8 @@ class IntSlider extends StatelessWidget {
 
   final String unit;
 
+  final bool showTitle;
+
   String get title => unit.isNotEmpty ? '$label ($value $unit)' : '$label ($value)';
 
   @override
@@ -158,7 +161,7 @@ class IntSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title),
+          if(showTitle) Text(title),
           Row(
             children: [
               Text('$min'),
