@@ -928,6 +928,7 @@ Future<T?> showCustomBottomSheet<T>({
   return showModalBottomSheet<T>(
     context: context,
     isScrollControlled: isScrollControlled,
+    scrollControlDisabledMaxHeightRatio: 1,
     constraints: BoxConstraints(
       maxWidth: MediaQuery.of(context).size.width-(maxWidthConstraintsPadding*2), // Padding of 8 on both sides
     ),
