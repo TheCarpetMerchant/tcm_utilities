@@ -679,7 +679,7 @@ class RichTextList extends StatelessWidget {
     super.key,
   });
 
-  final List<TextSpan> texts;
+  final List<InlineSpan> texts;
   final TextAlign textAlign;
 
   @override
