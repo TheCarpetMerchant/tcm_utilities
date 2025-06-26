@@ -248,6 +248,7 @@ class SimpleDropDown<K> extends StatelessWidget {
     this.title = '',
     this.expanded = false,
     this.padding = const EdgeInsets.all(8),
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     this.dropdownButtonFormFieldKey,
     super.key,
   });
@@ -265,6 +266,7 @@ class SimpleDropDown<K> extends StatelessWidget {
   final K? defaultValue;
 
   final EdgeInsets padding;
+  final EdgeInsets contentPadding;
   final void Function(K) onChanged;
   final bool expanded;
   final GlobalKey<State>? dropdownButtonFormFieldKey;
@@ -275,7 +277,10 @@ class SimpleDropDown<K> extends StatelessWidget {
       padding: padding,
       child: DropdownButtonFormField<K>(
         key: dropdownButtonFormFieldKey,
-        decoration: title.isNotEmpty ? InputDecoration(labelText: title) : null,
+        decoration: InputDecoration(
+          labelText: title.isNotEmpty ? title : null,
+          contentPadding: contentPadding,
+        ),
         isExpanded: expanded,
         value: content.keys.contains(value) ? value : defaultValue,
         onChanged: (val) {
@@ -699,12 +704,14 @@ class SearchTextField extends StatelessWidget {
     required this.title,
     this.titleAlwaysFloating = true,
     this.padding = const EdgeInsets.all(8),
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     super.key,
   });
 
   final TextEditingController controller;
   final String title;
   final EdgeInsets padding;
+  final EdgeInsets contentPadding;
   final bool titleAlwaysFloating;
 
   @override
@@ -715,6 +722,7 @@ class SearchTextField extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           labelText: title,
+          contentPadding: contentPadding,
           floatingLabelBehavior: titleAlwaysFloating ? FloatingLabelBehavior.always : null,
           suffixIcon: IconButton(
             onPressed: () => controller.text = '',
@@ -1189,6 +1197,7 @@ class DateTextField extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.onTapClear,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     super.key,
   });
 
@@ -1196,6 +1205,7 @@ class DateTextField extends StatelessWidget {
   final String title;
   final void Function() onTap;
   final void Function()? onTapClear;
+  final EdgeInsets contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -1208,6 +1218,7 @@ class DateTextField extends StatelessWidget {
           onTap: onTap,
           decoration: InputDecoration(
             labelText: title,
+            contentPadding: contentPadding,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             suffixIcon: onTapClear != null ? IconButton(
               onPressed: onTapClear,
