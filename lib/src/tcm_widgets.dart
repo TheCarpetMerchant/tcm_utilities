@@ -931,6 +931,7 @@ Future<T?> showCustomBottomSheet<T>({
   double radius = 8,
   bool isScrollControlled = false,
   bool aboveKeyboard = false,
+  bool safeArea = true,
   Color? barrierColor,
 }) async {
   return showModalBottomSheet<T>(
@@ -946,7 +947,10 @@ Future<T?> showCustomBottomSheet<T>({
       ),
     ),
     barrierColor: barrierColor,
-    builder: (context) => aboveKeyboard ? AboveKeyboard(child: child) : child,
+    builder: (context) {
+      var res = safeArea ? SafeArea(child: child) : child;
+      return aboveKeyboard ? AboveKeyboard(child: res) : res;
+    },
   );
 }
 
