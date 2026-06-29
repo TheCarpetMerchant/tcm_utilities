@@ -582,6 +582,7 @@ class StandardListView extends StatelessWidget {
     this.scrollable = true,
     this.showFloatingActionButtonBottomPadding = false,
     this.padding = const EdgeInsets.all(8),
+    this.separatorBuilder,
     super.key,
   });
 
@@ -600,6 +601,7 @@ class StandardListView extends StatelessWidget {
   final double bottomListPadding;
   final EdgeInsets padding;
   final bool showFloatingActionButtonBottomPadding;
+  final Widget Function(BuildContext, int)? separatorBuilder;
 
   int get totalItemCount => actualBottomPadding > 0 ? itemCount+1 : itemCount;
 
@@ -623,7 +625,7 @@ class StandardListView extends StatelessWidget {
           padding: padding,
           itemCount: totalItemCount,
           itemBuilder: checkBottomPaddingItemBuilder,
-          separatorBuilder: separatorSizedBoxBuilder,
+          separatorBuilder: separatorBuilder ?? separatorSizedBoxBuilder,
         );
     }
     widget = expanded ? Expanded(child: widget,) : widget;
