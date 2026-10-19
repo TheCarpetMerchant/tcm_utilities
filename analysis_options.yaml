@@ -29,6 +29,8 @@ analyzer:
     parameter_assignments: ignore # Allow reassignement of parameters
     avoid_bool_literals_in_conditional_expressions: ignore # Need ignore because of Hive's default bool value generated code
     prefer_mixin: ignore # Dumb, doesn't work with Flutter stuff (because it's dumb)
+  exclude:
+    - build/**
 
 linter:
   rules:
