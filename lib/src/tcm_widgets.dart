@@ -583,6 +583,7 @@ class StandardListView extends StatelessWidget {
     this.showFloatingActionButtonBottomPadding = false,
     this.padding = const EdgeInsets.all(8),
     this.separatorBuilder,
+    this.scrollController,
     super.key,
   });
 
@@ -602,6 +603,7 @@ class StandardListView extends StatelessWidget {
   final EdgeInsets padding;
   final bool showFloatingActionButtonBottomPadding;
   final Widget Function(BuildContext, int)? separatorBuilder;
+  final ScrollController? scrollController;
 
   int get totalItemCount => actualBottomPadding > 0 ? itemCount+1 : itemCount;
 
@@ -620,6 +622,7 @@ class StandardListView extends StatelessWidget {
       widget = Center(child: Text(nothingToShowText ?? defaultNothingToShowText, textAlign: TextAlign.center,),);
       if(itemCount > 0 || (nothingToShowText ?? defaultNothingToShowText).isEmpty)
         widget = ListView.separated(
+          controller: scrollController,
           shrinkWrap: shrinkWrap,
           physics: scrollable ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
           padding: padding,
